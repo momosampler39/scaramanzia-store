@@ -1,6 +1,14 @@
 package com.scaramanzia.store.albums;
+import com.scaramanzia.store.albumDesc.AlbumDesc;
 
+import com.scaramanzia.store.albumDesc.AlbumDesc;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,8 +17,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/albums")
-@RequiredArgsConstructor             // Lombok genera el constructor con el service
-@CrossOrigin(origins = "*")         // Permite peticiones desde cualquier origen (útil para Next.js)
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class AlbumController {
 
     private final AlbumService service;
@@ -53,5 +61,51 @@ public class AlbumController {
     @GetMapping("/search")
     public List<Album> buscar(@RequestParam String termino) {
         return service.buscar(termino);
+    }
+
+    // GET /api/albums/genero/{genero}
+    @GetMapping("/genero/{genero}")
+    public List<Album> porGenero(@PathVariable String genero) {
+        return service.porGenero(genero);
+    }
+
+    // GET /api/albums/ordenar?campo=precio
+    @GetMapping("/ordenar")
+    public List<Album> ordenar(@RequestParam(defaultValue = "titulo") String campo) {
+        return service.ordenarPor(campo);
+    }
+
+    // GET /api/albums/page?pagina=0&tamanio=10
+    @GetMapping("/page")
+    public Page<Album> paginar(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanio
+    ) {
+        return service.paginados(pagina, tamanio);
+    }
+
+    @GetMapping("/busqueda")
+    public Page<Album> buscarConFiltros(
+            @RequestParam(defaultValue = "") String q,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "titulo") String sort,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        Sort.Direction dir = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(dir, sort));
+        return service.buscarConFiltros(q, pageable);
+    }
+
+    @PostMapping
+    public ResponseEntity<Album> crear(@Valid @RequestBody AlbumDesc dto) {
+        Album creado = service.crear(dto);
+        return ResponseEntity.created(URI.create("/api/albums/" + creado.getId())).body(creado);
+    }
+
+    @PostMapping
+    public ResponseEntity<Album> crear(@Valid @RequestBody AlbumDesc dto) {
+        Album creado = service.crear(dto);  // este método lo implementas en AlbumService
+        return ResponseEntity.created(URI.create("/api/albums/" + creado.getId())).body(creado);
     }
 }

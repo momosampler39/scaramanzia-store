@@ -1,6 +1,11 @@
 package com.scaramanzia.store.albums;
 
+import com.scaramanzia.store.albumDesc.AlbumDesc;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,51 +14,75 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AlbumService {
 
-    private final AlbumRepository repo;
-
+    private final AlbumRepository repository;
 
     public List<Album> listar() {
-        return repo.findAll();
+        return repository.findAll();
     }
-
 
     public Album obtener(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Álbum no encontrado con ID: " + id));
+        return repository.findById(id).orElseThrow();
     }
 
-    // Crear un nuevo álbum
-    public Album crear(Album album) {
-        album.setId(null); // Asegura que se cree uno nuevo
-        return repo.save(album);
+    public Album crear(AlbumDesc dto) {
+        Album album = new Album();
+        album.setTitulo(dto.getTitulo());
+        album.setArtista(dto.getArtista());
+        album.setDescripcion(dto.getDescripcion());
+        album.setPrecio(dto.getPrecio());
+        album.setGenero(dto.getGenero());
+        album.setPortadaUrl(dto.getPortadaUrl());
+        album.setStock(dto.getStock());
+        album.setLinkDescarga(dto.getLinkDescarga());
+        return repository.save(album);
     }
 
-    // Actualizar un álbum existente
-    public Album actualizar(Long id, Album datos) {
-        Album existente = obtener(id); // Lanza error si no existe
+    public Album actualizar(Long id, Album actualizado) {
+        Album original = obtener(id);
 
-        existente.setTitulo(datos.getTitulo());
-        existente.setArtista(datos.getArtista());
-        existente.setDescripcion(datos.getDescripcion());
-        existente.setPrecio(datos.getPrecio());
-        existente.setGenero(datos.getGenero());
-        existente.setPortadaUrl(datos.getPortadaUrl());
-        existente.setStock(datos.getStock());
-        existente.setLinkDescarga(datos.getLinkDescarga());
+        original.setTitulo(actualizado.getTitulo());
+        original.setArtista(actualizado.getArtista());
+        original.setDescripcion(actualizado.getDescripcion());
+        original.setPrecio(actualizado.getPrecio());
+        original.setGenero(actualizado.getGenero());
+        original.setPortadaUrl(actualizado.getPortadaUrl());
+        original.setStock(actualizado.getStock());
+        original.setLinkDescarga(actualizado.getLinkDescarga());
 
-        return repo.save(existente);
+        return repository.save(original);
     }
 
-    // Eliminar un álbum
     public void eliminar(Long id) {
-        if (!repo.existsById(id)) {
-            throw new RuntimeException("No se puede eliminar. Álbum con ID " + id + " no encontrado.");
-        }
-        repo.deleteById(id);
+        repository.deleteById(id);
     }
 
-    // Buscar por título o artista
     public List<Album> buscar(String termino) {
-        return repo.buscar(termino);
+        return repository.buscar(termino);
     }
+
+    // Filtro por género
+    public List<Album> porGenero(String genero) {
+        return repository.findByGeneroIgnoreCase(genero);
+    }
+
+    // Ordenar por campo
+    public List<Album> ordenarPor(String campo) {
+        return repository.findAll(Sort.by(Sort.Direction.ASC, campo));
+    }
+
+    // Paginación (devuelve una página con X elementos)
+    public Page<Album> paginados(int pagina, int tamanio) {
+        Pageable pageable = PageRequest.of(pagina, tamanio);
+        return repository.findAll(pageable);
+    }
+
+    public Page<Album> buscarConFiltros(String termino, Pageable pageable) {
+        if (termino == null || termino.trim().isEmpty()) {
+            return repository.findAll(pageable);
+        }
+        return repository.buscarPaginado(termino.toLowerCase(), pageable);
+    }
+
+
+
 }
