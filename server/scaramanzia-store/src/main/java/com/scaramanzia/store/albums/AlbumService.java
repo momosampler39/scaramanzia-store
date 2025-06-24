@@ -33,10 +33,21 @@ public class AlbumService {
     }
 
     public Album crear(AlbumDesc dto) {
-        // VALIDACIONES DE NEGOCIO
+        // Validación obligatoria previa
+        if (dto.getStock() == null) {
+            throw new IllegalArgumentException("El stock es obligatorio");
+        }
+        if (dto.getPrecio() == null) {
+            throw new IllegalArgumentException("El precio es obligatorio");
+        }
 
+        // VALIDACIONES DE NEGOCIO
         if (dto.getPrecio() < 100.0) {
             throw new IllegalArgumentException("El precio no puede ser menor a $100.");
+        }
+
+        if (dto.getStock() < 0) {
+            throw new IllegalArgumentException("El stock no puede ser negativo");
         }
 
         if (dto.getStock() > 1000) {
@@ -47,7 +58,6 @@ public class AlbumService {
         if (existe) {
             throw new IllegalArgumentException("Ya existe un álbum con ese título y artista.");
         }
-
 
         // CONVERSIÓN A ENTIDAD
         Album album = new Album();
@@ -62,6 +72,7 @@ public class AlbumService {
 
         return repository.save(album);
     }
+
 
     public Album actualizar(Long id, AlbumDesc dto) {
         Album existente = repository.findById(id)

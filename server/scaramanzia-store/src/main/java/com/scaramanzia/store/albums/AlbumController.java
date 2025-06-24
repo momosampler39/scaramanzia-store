@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/albums")
@@ -92,8 +93,11 @@ public class AlbumController {
     @PostMapping
     public ResponseEntity<Album> crear(@Valid @RequestBody AlbumDesc dto) {
         Album creado = service.crear(dto);
-        return ResponseEntity.created(URI.create("/api/albums/" + creado.getId())).body(creado);
+        return ResponseEntity
+                .created(URI.create("/api/albums/" + creado.getId()))
+                .body(creado);
     }
+
 
 
     @GetMapping("/filtro")
@@ -118,7 +122,7 @@ public class AlbumController {
         return service.filtrados(pagina, tamanio, genero, ordenarPor, orden);
     }
 
-    @GetMapping("/page/filtrar")
+    @GetMapping("/page/ordenar")
     public Page<Album> filtrarYOrdenar(
             @RequestParam(defaultValue = "0") int pagina,
             @RequestParam(defaultValue = "10") int tamanio,
