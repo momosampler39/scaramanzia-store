@@ -35,19 +35,11 @@ public class AlbumController {
         return service.obtener(id);
     }
 
-    // POST /api/albums
-    @PostMapping
-    public ResponseEntity<Album> crear(@RequestBody Album album) {
-        Album creado = service.crear(album);
-        return ResponseEntity
-                .created(URI.create("/api/albums/" + creado.getId()))
-                .body(creado);
-    }
 
     // PUT /api/albums/{id}
     @PutMapping("/{id}")
-    public Album actualizar(@PathVariable Long id, @RequestBody Album album) {
-        return service.actualizar(id, album);
+    public Album actualizar(@PathVariable Long id, @Valid @RequestBody AlbumDesc dto) {
+        return service.actualizar(id, dto);
     }
 
     // DELETE /api/albums/{id}
@@ -103,9 +95,57 @@ public class AlbumController {
         return ResponseEntity.created(URI.create("/api/albums/" + creado.getId())).body(creado);
     }
 
-    @PostMapping
-    public ResponseEntity<Album> crear(@Valid @RequestBody AlbumDesc dto) {
-        Album creado = service.crear(dto);  // este método lo implementas en AlbumService
-        return ResponseEntity.created(URI.create("/api/albums/" + creado.getId())).body(creado);
+
+    @GetMapping("/filtro")
+    public Page<Album> filtrar(
+            @RequestParam(defaultValue = "") String titulo,
+            @RequestParam(defaultValue = "") String genero,
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanio,
+            @RequestParam(defaultValue = "titulo") String ordenarPor,
+            @RequestParam(defaultValue = "asc") String direccion
+    ) {
+        return service.filtrar(titulo, genero, pagina, tamanio, ordenarPor, direccion);
     }
+
+    public Page<Album> filtrados(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanio,
+            @RequestParam(required = false) String genero,
+            @RequestParam(defaultValue = "titulo") String ordenarPor,
+            @RequestParam(defaultValue = "asc") String orden
+    ) {
+        return service.filtrados(pagina, tamanio, genero, ordenarPor, orden);
+    }
+
+    @GetMapping("/page/filtrar")
+    public Page<Album> filtrarYOrdenar(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanio,
+            @RequestParam(required = false) String genero,
+            @RequestParam(defaultValue = "titulo") String orden,
+            @RequestParam(defaultValue = "asc") String direccion
+    ) {
+        return service.filtrarYOrdenar(pagina, tamanio, genero, orden, direccion);
+    }
+
+    @GetMapping("/page/filtrar")
+    public Page<Album> filtrarAvanzado(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanio,
+            @RequestParam(required = false) String genero,
+            @RequestParam(required = false) Double precioMin,
+            @RequestParam(required = false) Double precioMax,
+            @RequestParam(defaultValue = "titulo") String orden,
+            @RequestParam(defaultValue = "asc") String direccion
+    ) {
+        return service.filtrarAvanzado(pagina, tamanio, genero, precioMin, precioMax, orden, direccion);
+    }
+
+    @PatchMapping("/{id}")
+    public Album actualizarParcialmente(@PathVariable Long id, @RequestBody Map<String, Object> campos) {
+        return service.actualizarParcial(id, campos);
+    }
+
+
 }
