@@ -1,5 +1,6 @@
 package com.scaramanzia.store.pedidos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.scaramanzia.store.albums.Album;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -13,6 +14,7 @@ public class ItemPedido {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
+    @JsonBackReference
     private Pedido pedido;
 
     @ManyToOne
