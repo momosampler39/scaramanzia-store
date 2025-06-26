@@ -46,6 +46,7 @@ public class PedidoController {
             @PathVariable Long id,
             @RequestBody ActualizarEstadoRequest request
     ) {
+        System.out.println("Estado recibido: " + request.getEstado());
         return pedidoService.actualizarEstado(id, request.getEstado());
     }
 

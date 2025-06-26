@@ -17,6 +17,7 @@ public class Pedido {
 
     private LocalDateTime fecha;
 
+    @Column(length = 20)
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
 

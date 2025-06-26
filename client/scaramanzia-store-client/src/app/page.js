@@ -6,7 +6,7 @@ export default async function HomePage() {
   const albums = await getAlbums();
 
   return (
-    <main className="h-[calc(100dvh-55px)] bg-red-800">
+    <main className="h-[calc(100dvh-55px)] bg-gradient" >
       <h1>Bienvenido a Scaramanzia Records 🎵</h1>
 
       <h2>Álbumes destacados</h2>
