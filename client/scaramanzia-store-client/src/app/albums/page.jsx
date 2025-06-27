@@ -76,25 +76,31 @@ export default function AlbumsPage() {
   };
 
   return (
-    <main className="bg-gradient">
-      <h1>Álbumes Disponibles</h1>
+    <main className="bg-[#121212] min-h-screen w-full flex flex-col text-white font-sans">
+      {/* 🟢 Header con título y búsqueda */}
+      <div className="w-[95%] mx-auto max-w-[1550px] py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <h1 className="text-2xl font-bold tracking-tight">
+          Álbumes Disponibles
+        </h1>
 
-      {/* 🔎 Buscador reactivo */}
-      <input
-        type="text"
-        placeholder="Buscar por título o artista"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
+        <input
+          type="text"
+          placeholder="Buscar por título o artista"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="bg-[#1F1F1F] border border-gray-700 focus:border-[#1ED760] outline-none py-2 px-4 rounded-md w-full max-w-md transition duration-300 ease-in-out text-white placeholder:text-gray-400"
+        />
+      </div>
 
+      {/* 🟢 Contenido principal */}
       {loading ? (
-        <p>Cargando álbumes...</p>
+        <p className="text-center text-gray-300 py-20">Cargando álbumes...</p>
       ) : (
-        <section className="w-[95%] mx-auto max-w-[1550px] grid grid-cols-12 gap-4">
+        <section className="w-[95%] mx-auto max-w-[1550px] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 pb-20">
           {albums.map((album) => (
             <article
               key={album.id}
-              className="col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2  bg-[#1F1F1F] px-5 py-3 rounded-lg"
+              className="bg-[#181818] rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col"
             >
               <Image
                 src={
@@ -102,42 +108,65 @@ export default function AlbumsPage() {
                     ? album.portadaUrl
                     : imagenPorDefecto
                 }
-                width={150}
-                height={150}
+                width={500}
+                height={500}
                 alt={`${album.titulo}-image`}
-                className="object-cover rounded-xl w-full aspect-square mb-2 cursor-pointer"
+                className="object-cover rounded-md w-full aspect-square mb-4 cursor-pointer hover:opacity-90 transition duration-200"
                 onClick={() => router.push(`/albums/${album.id}`)}
               />
+              {/* <button
+                  onClick={() => confirmDelete(album)}
+                  className=" ml-auto p-1 text-sm border border-red-400 text-red-400 hover:bg-red-400 hover:text-white font-semibold py-1 rounded transition duration-200"
+                >
+                  X
+              </button> */}
 
-              <p className="font-semibold truncate">{album.titulo}</p>
-              <p className="text-xs mb-2 truncate">{album.artista} </p>
-              <p className="mb-2"> ${album.precio} </p>
-
-              <div className="flex flex-row gap-x-2">
+              <div className="relative">
                 
-                <button onClick={() => router.push(`/albums/${album.id}/edit`)}
-                  className="cursor-pointer py-2 rounded-sm w-[50%] text-sm bg-[#3BE377] text-black font-semibold">
-                  Editar
-                </button>
-                <button 
-                className="cursor-pointer  py-2 rounded-sm  w-[50%] text-sm  text-white font-semibold"
-                onClick={() => confirmDelete(album)}>Eliminar</button>
+                <p className="font-semibold truncate text-sm">{album.titulo}</p>
+                <p className="text-xs text-gray-400 mb-4 truncate">{album.artista}</p>
+                <div className="flex flex-row items-center justify-between">
+                  <p className="text-sm text-[#1ED760] font-bold">
+                    ${album.precio}
+                  </p>
+                  <button
+                    onClick={() => router.push(`/albums/${album.id}/edit`)}
+                    className=" text-sm px-6 bg-[#1ED760] hover:bg-[#1aa34a] text-black font-semibold py-1 rounded transition duration-200"
+                  >
+                    Editar
+                  </button>
+                </div>
               </div>
-            
+
+              <div className="flex gap-2 mt-auto">
+                
+              </div>
             </article>
           ))}
         </section>
       )}
 
-      {/* MODAL */}
+      {/* 🔴 Modal de confirmación */}
       {albumToDelete && (
         <div style={styles.backdrop}>
-          <div style={styles.modal}>
-            <p>
-              ¿Estás seguro de eliminar <strong>{albumToDelete.titulo}</strong>?
+          <div className="bg-white p-6 rounded-lg shadow-lg text-black max-w-sm w-full text-center space-y-4">
+            <p className="text-lg font-semibold">
+              ¿Eliminar <strong>{albumToDelete.titulo}</strong>?
             </p>
-            <button onClick={handleDelete}>Sí, eliminar</button>
-            <button onClick={cancelDelete}>Cancelar</button>
+            <div className="flex gap-4 justify-center">
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+              >
+                Sí, eliminar
+              </button>
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 border border-gray-400 rounded hover:bg-gray-100 transition"
+              >
+                Cancelar
+              </button>
+            </div>
           </div>
         </div>
       )}
