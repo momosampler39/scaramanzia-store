@@ -6,9 +6,10 @@ import lombok.Data;
 
 @Data
 public class ItemPedidoRequest {
-    @NotNull(message = "Debe especificarse el ID del álbum")
+
+    @NotNull(message = "El ID del álbum es obligatorio")
     private Long albumId;
 
-    @Min(value = 1, message = "La cantidad mínima es 1")
+    @Min(value = 1, message = "La cantidad debe ser al menos 1")
     private int cantidad;
 }

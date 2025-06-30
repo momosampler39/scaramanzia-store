@@ -8,21 +8,23 @@ import lombok.Data;
 @Entity
 @Data
 public class ItemPedido {
+
     @Id
     @GeneratedValue
     private Long id;
+
+    @ManyToOne(optional = false)
+    private Album album;
+
+    private int cantidad;
+
+    private Double precioUnitario;
+
+    private Double subtotal = 0.0;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
     @JsonBackReference
     private Pedido pedido;
 
-    @ManyToOne
-    @JoinColumn(name = "album_id")
-    private Album album;
-
-    private Integer cantidad;
-    private Double subtotal;
-
-    private double precioUnitario;
 }

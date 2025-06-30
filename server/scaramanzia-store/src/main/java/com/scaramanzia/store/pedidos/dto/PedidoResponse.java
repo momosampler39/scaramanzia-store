@@ -10,6 +10,8 @@ public class PedidoResponse {
     private Long id;
     private LocalDateTime fecha;
     private String estado;
+    private String nombreCliente;
+    private String emailCliente;
+    private Double total;
     private List<ItemPedidoResponse> items;
-    private double total;
 }

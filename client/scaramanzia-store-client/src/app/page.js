@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAlbums } from "@/lib/api";
+import Image from "next/image";
 
 export default async function HomePage() {
   const albums = await getAlbums();
@@ -26,15 +27,24 @@ export default async function HomePage() {
             {albums.slice(0, 6).map((album) => (
               <li
                 key={album.id}
-                className="bg-[#181818] p-4 rounded-lg hover:bg-[#232323] transition duration-300"
+                className="bg-[#181818] p-4 rounded-lg hover:bg-[#232323] transition duration-300 flex flex-row justify-center"
               >
-                <Link
-                  href={`/albums/${album.id}`}
-                  className="block font-semibold text-white hover:underline"
-                >
-                  {album.titulo}
-                </Link>
-                <p className="text-sm text-gray-400">{album.artista}</p>
+                <div className="flex flex-row items-center justify-center gap-x-2">
+                  <Image
+                    src={album.portadaUrl}
+                    width={500}
+                    height={500}
+                    alt={`${album.titulo}-image`}
+                    className="object-cover  aspect-square cursor-pointer hover:opacity-90 transition duration-200 w-16 h-16 rounded-full border-2 border-gray-500"
+                  />
+                  <Link
+                    href={`/albums/${album.id}`}
+                    className="flex flex-col justify-center font-semibold text-white hover:underline"
+                  >
+                    <p> {album.titulo} </p>
+                    <p className="text-sm text-gray-400">{album.artista}</p>
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>

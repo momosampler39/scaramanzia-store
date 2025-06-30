@@ -2,6 +2,7 @@ package com.scaramanzia.store.pedidos;
 
 import com.scaramanzia.store.pedidos.dto.ActualizarEstadoRequest;
 import com.scaramanzia.store.pedidos.dto.PedidoRequest;
+import com.scaramanzia.store.pedidos.dto.PedidoResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,19 +23,21 @@ public class PedidoController {
 
     // POST /api/pedidos
     @PostMapping
-    public ResponseEntity<Pedido> crear(@Valid @RequestBody PedidoRequest dto) {
+    public ResponseEntity<PedidoResponse> crear(@Valid @RequestBody PedidoRequest dto) {
         Pedido creado = pedidoService.crear(dto);
+        PedidoResponse respuesta = pedidoService.mapearAPedidoResponse(creado);
         return ResponseEntity
                 .created(URI.create("/api/pedidos/" + creado.getId()))
-                .body(creado);
+                .body(respuesta);
     }
 
     // GET /api/pedidos
     @GetMapping
-    public List<Pedido> listar() {
-        return pedidoService.listar();
+    public List<PedidoResponse> listar() {
+        return pedidoService.listar().stream()
+                .map(pedidoService::mapearAPedidoResponse)
+                .toList();
     }
-
     // GET /api/pedidos/{id}
     @GetMapping("/{id}")
     public Pedido obtener(@PathVariable Long id) {
@@ -55,7 +58,6 @@ public class PedidoController {
     public void eliminar(@PathVariable Long id) {
         pedidoService.eliminar(id);
     }
-
 
 
 

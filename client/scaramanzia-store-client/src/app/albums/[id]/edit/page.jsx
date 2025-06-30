@@ -44,28 +44,62 @@ export default function EditAlbumPage({ params }) {
     router.push('/albums');
   };
 
-  if (!form) return <p>Cargando...</p>;
+  if (!form) return <p className="text-white p-6">Cargando...</p>;
 
   return (
-    <main>
-      <h1>Editar Álbum</h1>
-      <form onSubmit={handleSubmit}>
-        <input name="titulo" value={form.titulo} onChange={handleChange} required />
-        <input name="artista" value={form.artista} onChange={handleChange} required />
-        <textarea name="descripcion" value={form.descripcion} onChange={handleChange} required />
-        <input name="precio" type="number" value={form.precio} onChange={handleChange} required />
-        <input name="genero" value={form.genero} onChange={handleChange} required />
-        <input name="portadaUrl" value={form.portadaUrl} onChange={handleChange} required />
-        <input name="stock" type="number" value={form.stock} onChange={handleChange} required />
-        <input name="linkDescarga" value={form.linkDescarga} onChange={handleChange} required />
-        <button type="submit">Guardar cambios</button>
-      </form>
+    <main className="min-h-screen bg-gradient flex items-center justify-center px-4 py-10">
+      <div className="w-full max-w-[600px] bg-[#1F1F1F] text-white p-8 rounded-xl shadow-lg">
+        <h1 className="text-2xl font-bold mb-6 text-center text-[#3BE377]">Editar Álbum</h1>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+          <label className='text-xs font-semibold text-gray-500'>Titulo </label>
+          <input name="titulo" value={form.titulo} onChange={handleChange} required placeholder="Título"
+            className="bg-[#0A0A0A] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-[#3BE377] transition-all" />
+          
+          <label className='text-xs font-semibold text-gray-500'>Artista </label>
+          <input name="artista" value={form.artista} onChange={handleChange} required placeholder="Artista"
+            className="bg-[#0A0A0A] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-[#3BE377] transition-all" />
+          
+          <label className='text-xs font-semibold text-gray-500'>Descripcion </label>
+          <textarea name="descripcion" value={form.descripcion} onChange={handleChange} required placeholder="Descripción"
+            className="bg-[#0A0A0A] border border-gray-700 rounded-md px-4 py-2 h-24 resize-none focus:outline-none focus:border-[#3BE377] transition-all" />
+
+        <label className='text-xs font-semibold text-gray-500'>Precio </label>
+          <input name="precio" type="number" value={form.precio} onChange={handleChange} required placeholder="Precio"
+            className="bg-[#0A0A0A] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-[#3BE377] transition-all" />
+          
+          <label className='text-xs font-semibold text-gray-500'>Genero </label>
+          <input name="genero" value={form.genero} onChange={handleChange} required placeholder="Género"
+            className="bg-[#0A0A0A] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-[#3BE377] transition-all" />
+          
+          <label className='text-xs font-semibold text-gray-500'>Link de Portada </label>
+          <input name="portadaUrl" value={form.portadaUrl} onChange={handleChange} required placeholder="URL de Portada"
+            className="bg-[#0A0A0A] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-[#3BE377] transition-all" />
+          
+          <label className='text-xs font-semibold text-gray-500'>Stock </label>
+          <input name="stock" type="number" value={form.stock} onChange={handleChange} required placeholder="Stock"
+            className="bg-[#0A0A0A] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-[#3BE377] transition-all" />
+          
+          <label className='text-xs font-semibold text-gray-500'>Link de descarga </label>
+          <input name="linkDescarga" value={form.linkDescarga} onChange={handleChange} required placeholder="Link de Descarga"
+            className="bg-[#0A0A0A] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-[#3BE377] transition-all" />
+
+
+          <button type="submit"
+            className="mt-4 bg-[#3BE377] text-black font-semibold py-2 rounded-md hover:brightness-110 transition-all">
+            Guardar cambios
+          </button>
+        </form>
+      </div>
 
       {showSuccess && (
         <div style={styles.backdrop}>
           <div style={styles.modal}>
-            <p>✅ Cambios guardados con éxito</p>
-            <button onClick={closeModal}>Aceptar</button>
+            <p className="text-black font-medium">✅ Cambios guardados con éxito</p>
+            <button onClick={closeModal}
+              className="mt-4 bg-[#3BE377] text-black font-semibold px-4 py-2 rounded-md hover:brightness-110 transition-all">
+              Aceptar
+            </button>
           </div>
         </div>
       )}
@@ -82,8 +116,9 @@ const styles = {
     zIndex: 1000
   },
   modal: {
-    background: '#fff', padding: '20px', borderRadius: '8px',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-    textAlign: 'center'
+    background: '#fff', padding: '30px', borderRadius: '10px',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+    textAlign: 'center',
+    minWidth: '300px'
   }
 };

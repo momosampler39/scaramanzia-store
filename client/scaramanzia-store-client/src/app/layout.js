@@ -2,7 +2,20 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import NavComponent from "@/components/navComponent/NavComponent";
+import { Inter } from "next/font/google";
+import { Rubik } from "next/font/google";
 
+const rubik = Rubik({
+  variable: "--font-rubik",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -20,9 +33,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
-        className={`relative ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`relative  ${rubik.className} antialiased`}
       >
         <CartProvider>
           <NavComponent />

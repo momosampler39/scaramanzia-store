@@ -18,7 +18,7 @@ export default function CheckoutPage() {
     e.preventDefault();
 
     if (!nombre || !email) {
-      setError('Completa todos los campos');
+      setError('⚠️ Por favor completa todos los campos.');
       return;
     }
 
@@ -46,38 +46,66 @@ export default function CheckoutPage() {
   };
 
   if (cart.length === 0) {
-    return <p>Tu carrito está vacío.</p>;
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-gradient text-white">
+        <p className="text-xl">Tu carrito está vacío 🛒</p>
+      </main>
+    );
   }
 
   return (
-    <main>
-      <h1>Finalizar compra</h1>
+    <main className="min-h-screen bg-gradient text-white px-4 py-10">
+      <div className="max-w-3xl mx-auto bg-[#1F1F1F] p-8 rounded-xl shadow-md space-y-8">
+        <h1 className="text-3xl font-bold text-[#3BE377]">Finalizar compra</h1>
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Nombre:
-          <input value={nombre} onChange={(e) => setNombre(e.target.value)} />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input value={email} onChange={(e) => setEmail(e.target.value)} />
-        </label>
-        <br />
-        <button type="submit">Confirmar pedido</button>
-      </form>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div>
+            <label className="block text-sm text-gray-400 mb-1">Nombre:</label>
+            <input
+              type="text"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              className="w-full p-2 rounded-md bg-[#0A0A0A] border border-gray-700 text-white focus:outline-none focus:border-[#3BE377] transition"
+              placeholder="Tu nombre completo"
+            />
+          </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div>
+            <label className="block text-sm text-gray-400 mb-1">Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 rounded-md bg-[#0A0A0A] border border-gray-700 text-white focus:outline-none focus:border-[#3BE377] transition"
+              placeholder="tucorreo@ejemplo.com"
+            />
+          </div>
 
-      <h2>Resumen del carrito:</h2>
-      <ul>
-        {cart.map(item => (
-          <li key={item.id}>
-            {item.titulo} - ${item.precio} x {item.quantity}
-          </li>
-        ))}
-      </ul>
-      <p><strong>Total:</strong> ${total}</p>
+          {error && (
+            <p className="text-red-500 text-sm font-medium">{error}</p>
+          )}
+
+          <button
+            type="submit"
+            className="bg-[#3BE377] text-black font-bold py-2 px-6 rounded-md hover:brightness-110 transition"
+          >
+            Confirmar pedido
+          </button>
+        </form>
+
+        <div>
+          <h2 className="text-xl font-semibold mb-2">Resumen del carrito:</h2>
+          <ul className="space-y-2">
+            {cart.map(item => (
+              <li key={item.id} className="flex justify-between text-sm border-b border-gray-700 pb-1">
+                <span>{item.titulo} x {item.quantity}</span>
+                <span>${item.precio * item.quantity}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-lg font-bold text-[#3BE377]">Total: ${total}</p>
+        </div>
+      </div>
     </main>
   );
 }

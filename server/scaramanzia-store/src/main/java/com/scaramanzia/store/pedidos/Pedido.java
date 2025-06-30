@@ -15,15 +15,15 @@ public class Pedido {
     @GeneratedValue
     private Long id;
 
+    private String nombreCliente;
+    private String emailCliente;
+    private Double total;
+
     private LocalDateTime fecha;
 
     @Column(length = 20)
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado;
-
-    private String emailCliente;
-
-    private Double total;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     @JsonManagedReference

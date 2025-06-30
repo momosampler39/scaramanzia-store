@@ -36,25 +36,92 @@ export default function CreateAlbumPage() {
   };
 
   return (
-    <main>
-      <h1>Crear Nuevo Álbum</h1>
-      <form onSubmit={handleSubmit}>
-        <input name="titulo" placeholder="Título" onChange={handleChange} required />
-        <input name="artista" placeholder="Artista" onChange={handleChange} required />
-        <textarea name="descripcion" placeholder="Descripción" onChange={handleChange} required />
-        <input name="precio" placeholder="Precio" type="number" onChange={handleChange} required />
-        <input name="genero" placeholder="Género" onChange={handleChange} required />
-        <input name="portadaUrl" placeholder="URL de portada" onChange={handleChange} required />
-        <input name="stock" placeholder="Stock" type="number" onChange={handleChange} required />
-        <input name="linkDescarga" placeholder="Link de descarga" onChange={handleChange} required />
-        <button type="submit">Crear álbum</button>
-      </form>
+    <main className="min-h-screen bg-gradient text-white px-4 py-10">
+      <div className="max-w-[700px] mx-auto bg-[#1F1F1F] p-8 rounded-xl shadow-md">
+        <h1 className="text-2xl font-bold text-[#3BE377] mb-6 text-center">
+          Crear Nuevo Álbum
+        </h1>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            name="titulo"
+            placeholder="Título"
+            onChange={handleChange}
+            required
+            className="bg-black border border-gray-600 rounded-md px-4 py-2 outline-none focus:border-[#3BE377]"
+          />
+          <input
+            name="artista"
+            placeholder="Artista"
+            onChange={handleChange}
+            required
+            className="bg-black border border-gray-600 rounded-md px-4 py-2 outline-none focus:border-[#3BE377]"
+          />
+          <textarea
+            name="descripcion"
+            placeholder="Descripción"
+            onChange={handleChange}
+            required
+            rows={3}
+            className="bg-black border border-gray-600 rounded-md px-4 py-2 outline-none focus:border-[#3BE377]"
+          />
+          <input
+            name="precio"
+            placeholder="Precio"
+            type="number"
+            onChange={handleChange}
+            required
+            className="bg-black border border-gray-600 rounded-md px-4 py-2 outline-none focus:border-[#3BE377]"
+          />
+          <input
+            name="genero"
+            placeholder="Género"
+            onChange={handleChange}
+            required
+            className="bg-black border border-gray-600 rounded-md px-4 py-2 outline-none focus:border-[#3BE377]"
+          />
+          <input
+            name="portadaUrl"
+            placeholder="URL de portada"
+            onChange={handleChange}
+            required
+            className="bg-black border border-gray-600 rounded-md px-4 py-2 outline-none focus:border-[#3BE377]"
+          />
+          <input
+            name="stock"
+            placeholder="Stock"
+            type="number"
+            onChange={handleChange}
+            required
+            className="bg-black border border-gray-600 rounded-md px-4 py-2 outline-none focus:border-[#3BE377]"
+          />
+          <input
+            name="linkDescarga"
+            placeholder="Link de descarga"
+            onChange={handleChange}
+            required
+            className="bg-black border border-gray-600 rounded-md px-4 py-2 outline-none focus:border-[#3BE377]"
+          />
+
+          <button
+            type="submit"
+            className="mt-4 bg-[#3BE377] text-black font-bold py-2 rounded-md hover:brightness-110 transition"
+          >
+            Crear álbum
+          </button>
+        </form>
+      </div>
 
       {showSuccess && (
         <div style={styles.backdrop}>
           <div style={styles.modal}>
-            <p>✅ Álbum creado exitosamente</p>
-            <button onClick={closeModal}>Aceptar</button>
+            <p className="text-black font-semibold">✅ Álbum creado exitosamente</p>
+            <button
+              onClick={closeModal}
+              className="mt-4 px-4 py-2 bg-[#3BE377] rounded font-bold"
+            >
+              Aceptar
+            </button>
           </div>
         </div>
       )}
@@ -73,6 +140,7 @@ const styles = {
   modal: {
     background: '#fff', padding: '20px', borderRadius: '8px',
     boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-    textAlign: 'center'
+    textAlign: 'center',
+    minWidth: '300px'
   }
 };
