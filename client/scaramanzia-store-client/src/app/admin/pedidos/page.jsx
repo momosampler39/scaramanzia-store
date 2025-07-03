@@ -352,10 +352,10 @@ export default function AdminPedidosPage() {
                 <strong>Pedido #{p.id}</strong> – {new Date(p.fecha).toLocaleString()}
               </p>
               <p className="text-sm text-gray-300">
-                <strong>Cliente:</strong> {p.nombre || "(sin nombre)"}
+                <strong>Cliente:</strong> {p.nombreCliente || "(sin nombre)"}
               </p>
               <p className="text-sm text-gray-300">
-                <strong>Email:</strong> {p.email || "(sin email)"}
+                <strong>Email:</strong> {p.emailCliente || "(sin email)"}
               </p>
 
               <ul className="mt-2 text-sm list-disc list-inside text-gray-400">

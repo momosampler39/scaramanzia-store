@@ -10,5 +10,4 @@ public class ScaramanziaStoreApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ScaramanziaStoreApplication.class, args);
 	}
-
 }
